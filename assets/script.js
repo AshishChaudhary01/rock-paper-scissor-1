@@ -16,8 +16,7 @@ function getComputerChoice(){
 }
 
 function getHumanChoice(){
-  return prompt("Enter your choice in Lower case\n'rock' 'paper' 'scissor'", "rock");
-
+  // return prompt("Enter your choice in Lower case\n'rock' 'paper' 'scissor'", "rock");
 }
 
 function decideWinner(humanChoice, computerChoice){
@@ -89,8 +88,7 @@ function showFinalResult(){
   }
 }
 
-function playRound(){
-  let humanChoice = getHumanChoice();
+function playRound(humanChoice){
   let computerChoice = getComputerChoice();
   
   humanChoice = humanChoice.toLowerCase();
@@ -99,13 +97,18 @@ function playRound(){
   showRoundResult(winner, humanChoice, computerChoice);
 }
 
-function playGame(){
-  //Play 5 rounds
-  // for(let i=0; i<5; i++){
-    playRound();
-  // }
-  showFinalResult();
-}
+// function playGame(){
+//   //Play 5 rounds
+//   // for(let i=0; i<5; i++){
+//     playRound();
+//   // }
+//   showFinalResult();
+// }
 
-//Run the Program/Game
-playGame();
+//Run the Program/Game on event trigger
+const buttons = document.querySelectorAll("button")
+  buttons.forEach((button) => {
+  button.addEventListener("click", () => {
+    playRound(button.id);
+  })
+});
