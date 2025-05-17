@@ -1,5 +1,17 @@
-  let humanScore = 0;
-  let computerScore = 0;
+const buttons = document.querySelectorAll("button");
+
+//Run the Program/Game when "Click" event triggers
+buttons.forEach((button) => {
+  button.addEventListener("click", () => {
+    playRound(button.id);
+  });
+});
+
+const roundResult = document.querySelector(".round");
+const gameResult = document.querySelector(".game");
+
+let humanScore = 0;
+let computerScore = 0;
 
 function getComputerChoice(){
   let randomNumber = Math.random();
@@ -13,10 +25,6 @@ function getComputerChoice(){
   else{
     return "scissor";
   }
-}
-
-function getHumanChoice(){
-  // return prompt("Enter your choice in Lower case\n'rock' 'paper' 'scissor'", "rock");
 }
 
 function decideWinner(humanChoice, computerChoice){
@@ -65,50 +73,38 @@ function updateScore(winner){
 
 function showRoundResult(winner, humanChoice, computerChoice){
   let result = "";
-    if(winner === "human"){
-      result =  `You win! ${humanChoice} beats ${computerChoice}`;
-    }else if(winner === "computer"){
-      result = `You lose! ${computerChoice} beats ${humanChoice}`;
-    }
-    else{
-      result = `Draw! both chose ${humanChoice}`;
-    }
-  console.log(result);
+  if(winner === "human"){
+    result =  `You win! ${humanChoice} beats ${computerChoice}`;
+  }else if(winner === "computer"){
+    result = `You lose! ${computerChoice} beats ${humanChoice}`;
+  }
+  else{
+    result = `Draw! both chose ${humanChoice}`;
+  }
+  roundResult.textContent = result; 
 }
 
 function showFinalResult(){
+  let result = "";
   if(humanScore>computerScore){
-    console.log(`You won! your score: ${humanScore} computer score: ${computerScore}`)
+    result = `You won! your score: ${humanScore} computer score: ${computerScore}`;
+  } else if(humanScore<computerScore){
+    result = `You Lost! your score: ${humanScore} computer score: ${computerScore}`;
+  }else{
+    result = `Draw! your score: ${humanScore} computer score: ${computerScore}`;
   }
-  if(humanScore<computerScore){
-    console.log(`You Lost! your score: ${humanScore} computer score: ${computerScore}`)
-  }
-  else{
-    console.log(`Draw! your score: ${humanScore} computer score: ${computerScore}`)
-  }
+  gameResult.textContent = result;
 }
 
 function playRound(humanChoice){
   let computerChoice = getComputerChoice();
-  
   humanChoice = humanChoice.toLowerCase();
   let winner = decideWinner(humanChoice, computerChoice);
   updateScore(winner);
   showRoundResult(winner, humanChoice, computerChoice);
+  if(humanScore>=5 || computerScore>=5){
+    showFinalResult();
+    humanScore = 0;
+    computerScore = 0;
+  }
 }
-
-// function playGame(){
-//   //Play 5 rounds
-//   // for(let i=0; i<5; i++){
-//     playRound();
-//   // }
-//   showFinalResult();
-// }
-
-//Run the Program/Game on event trigger
-const buttons = document.querySelectorAll("button")
-  buttons.forEach((button) => {
-  button.addEventListener("click", () => {
-    playRound(button.id);
-  })
-});

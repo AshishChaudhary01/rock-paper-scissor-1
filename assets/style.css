@@ -28,3 +28,13 @@
   /* border-radius: 7px; */
   font-weight: bolder;
 }
+
+.result-container{
+  padding-top: 50px 150px;
+}
+
+.round,
+.game{
+  margin-top: 20px 50px;
+  padding: 10px;
+}
