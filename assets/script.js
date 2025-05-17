@@ -7,9 +7,13 @@ buttons.forEach((button) => {
   });
 });
 
+const scoreBoardTitle = document.querySelector("#score-board-title");
+const score = document.querySelector("#score");
+const result = document.querySelector(".result");
 const roundResult = document.querySelector(".round");
 const gameResult = document.querySelector(".game");
 
+//Global Variable to track Score of players
 let humanScore = 0;
 let computerScore = 0;
 
@@ -71,29 +75,61 @@ function updateScore(winner){
   }
 }
 
+function showUpdatedScore(){
+  score.textContent = `Your Score: ${humanScore} Computer Score: ${computerScore}`;
+}
+
 function showRoundResult(winner, humanChoice, computerChoice){
-  let result = "";
+  let result = "Round result: ";
   if(winner === "human"){
-    result =  `You win! ${humanChoice} beats ${computerChoice}`;
+    result = result + `You win! ${humanChoice} beats ${computerChoice}`;
   }else if(winner === "computer"){
-    result = `You lose! ${computerChoice} beats ${humanChoice}`;
+    result = result +`You lose! ${computerChoice} beats ${humanChoice}`;
   }
   else{
-    result = `Draw! both chose ${humanChoice}`;
+    result = result + `Draw! both chose ${humanChoice}`;
   }
   roundResult.textContent = result; 
 }
 
 function showFinalResult(){
-  let result = "";
+  let result = "Final Result: ";
   if(humanScore>computerScore){
-    result = `You won! your score: ${humanScore} computer score: ${computerScore}`;
+    result = result + `YAY! You won! your score: ${humanScore} computer score: ${computerScore}`;
   } else if(humanScore<computerScore){
-    result = `You Lost! your score: ${humanScore} computer score: ${computerScore}`;
-  }else{
-    result = `Draw! your score: ${humanScore} computer score: ${computerScore}`;
+    result = result + `You Lost! your score: ${humanScore} computer score: ${computerScore}`;
   }
   gameResult.textContent = result;
+}
+  
+function showRestartOption(){
+  const restartButtonContainer = document.createElement("div");
+  const restartButton = document.createElement("button");
+
+  restartButtonContainer.classList.add("restart-button-container");
+  restartButton.setAttribute("id", "restart");
+  restartButton.textContent = "RESTART";
+
+  restartButtonContainer.appendChild(restartButton);
+  result.appendChild(restartButtonContainer);
+
+  restartButton.addEventListener("click", () => {
+    restartGame(restartButtonContainer);
+  });
+}
+
+function restartGame(restartButtonContainer){
+  humanScore = computerScore = 0;
+  scoreBoardTitle.textContent = "";
+  score.textContent = "";
+  roundResult.textContent = "";
+  gameResult.textContent = "";
+  result.removeChild(restartButtonContainer);
+
+  //Enable options buttons
+  buttons.forEach((button) => {
+    button.disabled = false;
+  });
 }
 
 function playRound(humanChoice){
@@ -101,10 +137,17 @@ function playRound(humanChoice){
   humanChoice = humanChoice.toLowerCase();
   let winner = decideWinner(humanChoice, computerChoice);
   updateScore(winner);
+  //Show Score board title for context
+  scoreBoardTitle.textContent = "[SCORE BOARD]";
+  showUpdatedScore();
   showRoundResult(winner, humanChoice, computerChoice);
   if(humanScore>=5 || computerScore>=5){
     showFinalResult();
-    humanScore = 0;
-    computerScore = 0;
+
+    //Disable options buttons
+    buttons.forEach((button) => {
+      button.disabled = true;
+    });
+    showRestartOption();
   }
 }
