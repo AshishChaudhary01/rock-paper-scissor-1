@@ -7,6 +7,8 @@ buttons.forEach((button) => {
   });
 });
 
+let round = 0;
+
 const scoreBoardTitle = document.querySelector("#score-board-title");
 const score = document.querySelector("#score");
 const result = document.querySelector(".result");
@@ -80,7 +82,7 @@ function showUpdatedScore(){
 }
 
 function showRoundResult(winner, humanChoice, computerChoice){
-  let result = "Round result: ";
+  let result = `Round ${round} result: `;
   if(winner === "human"){
     result = result + `You win! ${humanChoice} beats ${computerChoice}`;
   }else if(winner === "computer"){
@@ -119,6 +121,7 @@ function showRestartOption(){
 }
 
 function restartGame(restartButtonContainer){
+  round = 0;
   humanScore = computerScore = 0;
   scoreBoardTitle.textContent = "";
   score.textContent = "";
@@ -137,6 +140,7 @@ function playRound(humanChoice){
   humanChoice = humanChoice.toLowerCase();
   let winner = decideWinner(humanChoice, computerChoice);
   updateScore(winner);
+  round += 1;
   //Show Score board title for context
   scoreBoardTitle.textContent = "[SCORE BOARD]";
   showUpdatedScore();
